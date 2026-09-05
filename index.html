@@ -1,4 +1,4 @@
-
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,118 +7,163 @@
     <title>Chatly</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <div class="app">
 
-        <!-- AUTH SCREEN -->
-        <div id="authScreen" class="auth-screen">
+        <!-- LOGIN / SIGNUP -->
+        <section id="authScreen" class="auth-screen">
+
             <div class="auth-box">
+
                 <div class="logo">💬</div>
+
                 <h1>Chatly</h1>
                 <p class="subtitle">Simple online chatting.</p>
 
+                <!-- LOGIN -->
                 <div id="loginForm">
+
                     <h2>Welcome back</h2>
 
                     <input
-                        type="text"
                         id="loginName"
+                        type="text"
                         placeholder="Name"
                         autocomplete="username"
                     >
 
                     <input
-                        type="password"
                         id="loginPassword"
+                        type="password"
                         placeholder="Password"
                         autocomplete="current-password"
                     >
 
-                    <button id="loginButton">Login</button>
+                    <button id="loginButton" type="button">
+                        Login
+                    </button>
 
                     <p class="switch">
                         Don't have an account?
-                        <button id="showSignup">Sign up</button>
+                        <button id="showSignup" type="button">
+                            Sign up
+                        </button>
                     </p>
+
                 </div>
 
+
+                <!-- SIGNUP -->
                 <div id="signupForm" class="hidden">
+
                     <h2>Create account</h2>
 
                     <input
-                        type="text"
                         id="signupName"
+                        type="text"
                         placeholder="Name"
                         maxlength="24"
                         autocomplete="username"
                     >
 
                     <input
-                        type="password"
                         id="signupPassword"
+                        type="password"
                         placeholder="Password"
                         autocomplete="new-password"
                     >
 
                     <input
-                        type="password"
                         id="signupPasswordConfirm"
+                        type="password"
                         placeholder="Confirm password"
                         autocomplete="new-password"
                     >
 
-                    <button id="signupButton">Create Account</button>
+                    <button id="signupButton" type="button">
+                        Create Account
+                    </button>
 
                     <p class="switch">
                         Already have an account?
-                        <button id="showLogin">Login</button>
+                        <button id="showLogin" type="button">
+                            Login
+                        </button>
                     </p>
+
                 </div>
 
                 <p id="authMessage" class="message"></p>
+
             </div>
-        </div>
+
+        </section>
 
 
-        <!-- CHAT SCREEN -->
-        <div id="chatScreen" class="chat-screen hidden">
+        <!-- CHAT -->
+        <section id="chatScreen" class="chat-screen hidden">
 
             <header class="topbar">
+
                 <div class="brand">
                     <span class="brand-icon">💬</span>
                     <span>Chatly</span>
                 </div>
 
                 <div class="user-area">
+
                     <span id="currentUsername"></span>
-                    <button id="logoutButton" class="logout">Logout</button>
+
+                    <button
+                        id="logoutButton"
+                        class="logout"
+                        type="button"
+                    >
+                        Logout
+                    </button>
+
                 </div>
+
             </header>
 
+
             <main id="messages" class="messages">
+
                 <div class="empty-chat">
                     <div>💬</div>
                     <h2>Welcome to Chatly</h2>
                     <p>Start the conversation.</p>
                 </div>
+
             </main>
 
+
             <div class="message-area">
+
                 <input
-                    type="text"
                     id="messageInput"
+                    type="text"
                     placeholder="Type a message..."
                     maxlength="1000"
                 >
-                <button id="sendButton">Send</button>
+
+                <button
+                    id="sendButton"
+                    type="button"
+                >
+                    Send
+                </button>
+
             </div>
 
-        </div>
+        </section>
 
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
 
