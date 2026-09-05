@@ -1,1 +1,2909 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chatly</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f1117;
+    color: white;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* AUTH */
+
+#authScreen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 430px;
+    padding: 35px;
+    background: #181b24;
+    border: 1px solid #292e3a;
+    border-radius: 20px;
+    box-shadow: 0 20px 70px rgba(0,0,0,.45);
+    text-align: center;
+}
+
+.logo {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #5865f2;
+    border-radius: 18px;
+    font-size: 32px;
+}
+
+.auth-box h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.subtitle {
+    margin: 8px 0 30px;
+    color: #949baa;
+}
+
+.auth-box h2 {
+    margin: 0 0 20px;
+    font-size: 21px;
+}
+
+.auth-input {
+    width: 100%;
+    height: 48px;
+    margin-bottom: 12px;
+    padding: 0 15px;
+    border: 1px solid #303644;
+    border-radius: 10px;
+    outline: none;
+    background: #10131a;
+    color: white;
+    font-size: 15px;
+}
+
+.auth-input:focus {
+    border-color: #5865f2;
+}
+
+.auth-input::placeholder {
+    color: #707786;
+}
+
+.main-auth-button {
+    width: 100%;
+    height: 48px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 10px;
+    background: #5865f2;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.main-auth-button:hover {
+    background: #4752c4;
+}
+
+.switch-text {
+    margin-top: 20px;
+    color: #8d94a3;
+    font-size: 14px;
+}
+
+.switch-button {
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #7289ff;
+    font-size: 14px;
+}
+
+.switch-button:hover {
+    text-decoration: underline;
+}
+
+#authMessage {
+    min-height: 20px;
+    margin-top: 15px;
+    color: #ff6b6b;
+    font-size: 14px;
+}
+
+/* PROFILE */
+
+.profile-picker {
+    margin-bottom: 15px;
+}
+
+.profile-preview {
+    width: 85px;
+    height: 85px;
+    margin: 0 auto 10px;
+    display: block;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #5865f2;
+    border: 3px solid #303644;
+}
+
+.profile-file-button {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #20242e;
+    border: 1px solid #303644;
+    color: #ddd;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.profile-file-button:hover {
+    background: #2a2f3a;
+}
+
+#profilePictureInput {
+    display: none;
+}
+
+/* CHAT */
+
+#chatScreen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    height: 65px;
+    flex-shrink: 0;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #181b24;
+    border-bottom: 1px solid #292e3a;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.brand-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #5865f2;
+    border-radius: 10px;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#currentProfilePicture {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #5865f2;
+}
+
+#currentUsername {
+    color: #d8dbe3;
+    font-size: 14px;
+}
+
+.logout-button {
+    padding: 8px 13px;
+    border: 1px solid #3a3f4c;
+    border-radius: 8px;
+    background: #20242e;
+    color: #ddd;
+}
+
+.logout-button:hover {
+    background: #2a2f3a;
+}
+
+/* MESSAGES */
+
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+}
+
+.empty-chat {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #858c9b;
+    text-align: center;
+}
+
+.empty-chat-icon {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.empty-chat h2 {
+    margin: 0 0 7px;
+    color: #dfe2ea;
+}
+
+.empty-chat p {
+    margin: 0;
+}
+
+/* MESSAGE */
+
+.chat-message {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto 14px;
+    padding: 13px 15px;
+    background: #181b24;
+    border: 1px solid #292e3a;
+    border-radius: 12px;
+}
+
+.message-main {
+    display: flex;
+    gap: 12px;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #5865f2;
+}
+
+.message-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.message-user {
+    color: #7289ff;
+    font-weight: bold;
+}
+
+.message-id {
+    color: #656c7b;
+    font-size: 11px;
+}
+
+.message-content {
+    margin-top: 7px;
+    color: #e4e6eb;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.45;
+}
+
+/* THREE DOTS */
+
+.message-menu-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: #8d94a3;
+    font-size: 20px;
+    opacity: 0;
+}
+
+.chat-message:hover .message-menu-button {
+    opacity: 1;
+}
+
+.message-menu-button:hover {
+    background: #292e3a;
+    color: white;
+}
+
+.message-menu {
+    position: absolute;
+    z-index: 50;
+    top: 43px;
+    right: 10px;
+    width: 200px;
+    padding: 6px;
+    background: #20242e;
+    border: 1px solid #353b49;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.45);
+}
+
+.menu-item {
+    width: 100%;
+    padding: 10px 11px;
+    display: block;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: #ddd;
+    text-align: left;
+    font-size: 14px;
+}
+
+.menu-item:hover {
+    background: #303644;
+}
+
+.menu-item.danger:hover {
+    background: #43252a;
+    color: #ff7b7b;
+}
+
+/* REACTIONS */
+
+.reaction-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 9px;
+}
+
+.reaction {
+    padding: 4px 8px;
+    border: 1px solid #303644;
+    border-radius: 7px;
+    background: #20242e;
+    color: white;
+    font-size: 13px;
+}
+
+.reaction:hover {
+    background: #303644;
+}
+
+.reaction.mine {
+    border-color: #5865f2;
+    background: #252d5c;
+}
+
+.reaction-image {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+/* EMOJI PICKER */
+
+.emoji-picker {
+    position: absolute;
+    z-index: 100;
+    top: 43px;
+    right: 10px;
+    width: 310px;
+    padding: 12px;
+    background: #20242e;
+    border: 1px solid #353b49;
+    border-radius: 12px;
+    box-shadow: 0 15px 45px rgba(0,0,0,.5);
+}
+
+.emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    gap: 5px;
+    max-height: 190px;
+    overflow-y: auto;
+}
+
+.emoji-button {
+    height: 36px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    font-size: 21px;
+}
+
+.emoji-button:hover {
+    background: #303644;
+}
+
+.emoji-footer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #353b49;
+    display: flex;
+    gap: 7px;
+}
+
+.add-emoji-button {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #353b49;
+    border-radius: 8px;
+    background: #292e3a;
+    color: white;
+    font-size: 13px;
+}
+
+.add-emoji-button:hover {
+    background: #353b49;
+}
+
+.custom-emoji {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+/* FILE */
+
+.file-preview {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 8px 10px;
+    width: fit-content;
+    max-width: 100%;
+    background: #20242e;
+    border: 1px solid #303644;
+    border-radius: 8px;
+    color: #cdd1db;
+    font-size: 13px;
+}
+
+.file-preview img {
+    max-width: 220px;
+    max-height: 180px;
+    border-radius: 7px;
+    object-fit: contain;
+}
+
+.file-preview a {
+    color: #7289ff;
+    text-decoration: none;
+}
+
+.file-preview a:hover {
+    text-decoration: underline;
+}
+
+/* INPUT */
+
+.message-area {
+    width: 100%;
+    max-width: 930px;
+    margin: 0 auto;
+    padding: 15px 20px 20px;
+    display: flex;
+    gap: 8px;
+}
+
+#messageInput {
+    flex: 1;
+    height: 48px;
+    padding: 0 15px;
+    border: 1px solid #303644;
+    border-radius: 10px;
+    outline: none;
+    background: #181b24;
+    color: white;
+    font-size: 15px;
+}
+
+#messageInput:focus {
+    border-color: #5865f2;
+}
+
+#messageInput::placeholder {
+    color: #6e7584;
+}
+
+#fileButton {
+    width: 48px;
+    border: 1px solid #303644;
+    border-radius: 10px;
+    background: #181b24;
+    color: #c5cad5;
+    font-size: 20px;
+}
+
+#fileButton:hover {
+    background: #252a35;
+}
+
+#sendButton {
+    width: 85px;
+    border: none;
+    border-radius: 10px;
+    background: #5865f2;
+    color: white;
+    font-weight: bold;
+}
+
+#sendButton:hover {
+    background: #4752c4;
+}
+
+#attachmentInput {
+    display: none;
+}
+
+/* TOAST */
+
+#toast {
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    bottom: 25px;
+    transform: translateX(-50%);
+    padding: 10px 15px;
+    background: #20242e;
+    border: 1px solid #353b49;
+    border-radius: 9px;
+    color: white;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s;
+}
+
+#toast.show {
+    opacity: 1;
+}
+
+/* MOBILE */
+
+@media (max-width:600px) {
+
+    .auth-box {
+        padding: 25px 20px;
+    }
+
+    .topbar {
+        padding: 0 12px;
+    }
+
+    #currentUsername {
+        max-width: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #messages {
+        padding: 15px 10px;
+    }
+
+    .message-area {
+        padding: 10px;
+    }
+
+    #sendButton {
+        width: 70px;
+    }
+
+    .message-menu-button {
+        opacity: 1;
+    }
+
+    .emoji-picker {
+        width: 280px;
+        right: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<section id="authScreen">
+
+    <div class="auth-box">
+
+        <div class="logo">💬</div>
+
+        <h1>Chatly</h1>
+
+        <p class="subtitle">
+            Simple online chatting.
+        </p>
+
+        <div id="loginForm">
+
+            <h2>Welcome back</h2>
+
+            <input
+                id="loginName"
+                class="auth-input"
+                type="text"
+                placeholder="Name"
+                maxlength="24"
+                autocomplete="username"
+            >
+
+            <input
+                id="loginPassword"
+                class="auth-input"
+                type="password"
+                placeholder="Password"
+                autocomplete="current-password"
+            >
+
+            <button
+                id="loginButton"
+                class="main-auth-button"
+                type="button"
+            >
+                Login
+            </button>
+
+            <p class="switch-text">
+                Don't have an account?
+                <button
+                    id="showSignup"
+                    class="switch-button"
+                    type="button"
+                >
+                    Sign up
+                </button>
+            </p>
+
+        </div>
+
+        <div id="signupForm" class="hidden">
+
+            <h2>Create account</h2>
+
+            <div class="profile-picker">
+
+                <img
+                    id="profilePreview"
+                    class="profile-preview"
+                    alt="Profile picture"
+                >
+
+                <label
+                    for="profilePictureInput"
+                    class="profile-file-button"
+                >
+                    🖼️ Choose profile picture
+                </label>
+
+                <input
+                    id="profilePictureInput"
+                    type="file"
+                    accept="image/*"
+                >
+
+            </div>
+
+            <input
+                id="signupName"
+                class="auth-input"
+                type="text"
+                placeholder="Choose a name"
+                maxlength="24"
+                autocomplete="username"
+            >
+
+            <input
+                id="signupPassword"
+                class="auth-input"
+                type="password"
+                placeholder="Create a password"
+                autocomplete="new-password"
+            >
+
+            <button
+                id="signupButton"
+                class="main-auth-button"
+                type="button"
+            >
+                Create Account
+            </button>
+
+            <p class="switch-text">
+                Already have an account?
+                <button
+                    id="showLogin"
+                    class="switch-button"
+                    type="button"
+                >
+                    Login
+                </button>
+            </p>
+
+        </div>
+
+        <p id="authMessage"></p>
+
+    </div>
+
+</section>
+
+<section id="chatScreen" class="hidden">
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <span class="brand-icon">💬</span>
+
+            <span>Chatly</span>
+
+        </div>
+
+        <div class="user-area">
+
+            <img
+                id="currentProfilePicture"
+                alt="Profile"
+            >
+
+            <span id="currentUsername"></span>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+                type="button"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+    <main id="messages">
+
+        <div class="empty-chat">
+
+            <div class="empty-chat-icon">💬</div>
+
+            <h2>Welcome to Chatly</h2>
+
+            <p>Start the conversation.</p>
+
+        </div>
+
+    </main>
+
+    <div class="message-area">
+
+        <button
+            id="fileButton"
+            type="button"
+            title="Attach a file"
+        >
+            📎
+        </button>
+
+        <input
+            id="messageInput"
+            type="text"
+            placeholder="Write a message..."
+            maxlength="2000"
+            autocomplete="off"
+        >
+
+        <button
+            id="sendButton"
+            type="button"
+        >
+            Send
+        </button>
+
+        <input
+            id="attachmentInput"
+            type="file"
+        >
+
+    </div>
+
+</section>
+
+<div id="toast"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    "use strict";
+
+    /* ================================
+       STORAGE KEYS
+    ================================= */
+
+    const USERS_KEY = "CHATLY_USERS";
+    const CURRENT_USER_KEY = "CHATLY_CURRENT_USER";
+    const MESSAGES_KEY = "CHATLY_MESSAGES";
+    const CUSTOM_EMOJIS_KEY = "CHATLY_CUSTOM_EMOJIS";
+    const MESSAGE_COUNTER_KEY = "CHATLY_MESSAGE_COUNTER";
+
+    /* ================================
+       ELEMENTS
+    ================================= */
+
+    const authScreen = document.getElementById("authScreen");
+    const chatScreen = document.getElementById("chatScreen");
+
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+
+    const loginName = document.getElementById("loginName");
+    const loginPassword = document.getElementById("loginPassword");
+
+    const signupName = document.getElementById("signupName");
+    const signupPassword = document.getElementById("signupPassword");
+
+    const signupButton = document.getElementById("signupButton");
+    const loginButton = document.getElementById("loginButton");
+
+    const showSignup = document.getElementById("showSignup");
+    const showLogin = document.getElementById("showLogin");
+
+    const logoutButton = document.getElementById("logoutButton");
+
+    const authMessage = document.getElementById("authMessage");
+
+    const profilePreview = document.getElementById("profilePreview");
+    const profilePictureInput =
+        document.getElementById("profilePictureInput");
+
+    const currentUsername =
+        document.getElementById("currentUsername");
+
+    const currentProfilePicture =
+        document.getElementById("currentProfilePicture");
+
+    const messages =
+        document.getElementById("messages");
+
+    const messageInput =
+        document.getElementById("messageInput");
+
+    const sendButton =
+        document.getElementById("sendButton");
+
+    const fileButton =
+        document.getElementById("fileButton");
+
+    const attachmentInput =
+        document.getElementById("attachmentInput");
+
+    const toast =
+        document.getElementById("toast");
+
+    /* ================================
+       DEFAULT AVATAR
+    ================================= */
+
+    const defaultAvatar =
+        "data:image/svg+xml;charset=UTF-8," +
+        encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="100"
+                 height="100"
+                 viewBox="0 0 100 100">
+
+                <rect width="100"
+                      height="100"
+                      rx="50"
+                      fill="#5865f2"/>
+
+                <circle
+                    cx="50"
+                    cy="39"
+                    r="17"
+                    fill="white"/>
+
+                <path
+                    d="M20 88
+                       C20 67 34 57 50 57
+                       C66 57 80 67 80 88"
+                    fill="white"/>
+            </svg>
+        `);
+
+    profilePreview.src = defaultAvatar;
+
+    let selectedProfilePicture = defaultAvatar;
+    let pendingAttachment = null;
+
+    /* ================================
+       SAFE STORAGE
+    ================================= */
+
+    function storageAvailable() {
+
+        try {
+
+            const testKey = "__chatly_test__";
+
+            localStorage.setItem(
+                testKey,
+                "1"
+            );
+
+            localStorage.removeItem(
+                testKey
+            );
+
+            return true;
+
+        } catch (error) {
+
+            return false;
+
+        }
+    }
+
+    if (!storageAvailable()) {
+
+        authMessage.textContent =
+            "Your browser is blocking local storage. Please allow site storage for Chatly.";
+
+        return;
+    }
+
+    /* ================================
+       STORAGE HELPERS
+    ================================= */
+
+    function getUsers() {
+
+        try {
+
+            const data =
+                localStorage.getItem(
+                    USERS_KEY
+                );
+
+            if (!data) {
+                return [];
+            }
+
+            const parsed =
+                JSON.parse(data);
+
+            return Array.isArray(parsed)
+                ? parsed
+                : [];
+
+        } catch (error) {
+
+            console.error(
+                "Chatly users error:",
+                error
+            );
+
+            return [];
+
+        }
+    }
+
+    function saveUsers(users) {
+
+        try {
+
+            localStorage.setItem(
+                USERS_KEY,
+                JSON.stringify(users)
+            );
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "Could not save users:",
+                error
+            );
+
+            showAuthError(
+                "Could not save account. Your browser storage may be full."
+            );
+
+            return false;
+        }
+    }
+
+    function getMessages() {
+
+        try {
+
+            const data =
+                localStorage.getItem(
+                    MESSAGES_KEY
+                );
+
+            if (!data) {
+                return [];
+            }
+
+            const parsed =
+                JSON.parse(data);
+
+            return Array.isArray(parsed)
+                ? parsed
+                : [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+    }
+
+    function saveMessages(list) {
+
+        try {
+
+            localStorage.setItem(
+                MESSAGES_KEY,
+                JSON.stringify(list)
+            );
+
+            return true;
+
+        } catch (error) {
+
+            showToast(
+                "Storage is full. Remove some files/messages."
+            );
+
+            return false;
+        }
+    }
+
+    function getCustomEmojis() {
+
+        try {
+
+            const data =
+                localStorage.getItem(
+                    CUSTOM_EMOJIS_KEY
+                );
+
+            if (!data) {
+                return [];
+            }
+
+            const parsed =
+                JSON.parse(data);
+
+            return Array.isArray(parsed)
+                ? parsed
+                : [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+    }
+
+    function saveCustomEmojis(emojis) {
+
+        try {
+
+            localStorage.setItem(
+                CUSTOM_EMOJIS_KEY,
+                JSON.stringify(emojis)
+            );
+
+        } catch (error) {
+
+            showToast(
+                "Storage is full."
+            );
+
+        }
+    }
+
+    function getCurrentUser() {
+
+        try {
+
+            const data =
+                localStorage.getItem(
+                    CURRENT_USER_KEY
+                );
+
+            if (!data) {
+                return null;
+            }
+
+            return JSON.parse(data);
+
+        } catch (error) {
+
+            return null;
+
+        }
+    }
+
+    /* ================================
+       MESSAGES COUNTER
+    ================================= */
+
+    function getNextMessageID() {
+
+        let number =
+            Number(
+                localStorage.getItem(
+                    MESSAGE_COUNTER_KEY
+                )
+            );
+
+        if (!Number.isFinite(number) || number < 1) {
+            number = 1;
+        } else {
+            number++;
+        }
+
+        localStorage.setItem(
+            MESSAGE_COUNTER_KEY,
+            String(number)
+        );
+
+        return number;
+    }
+
+    /* ================================
+       AUTH MESSAGE
+    ================================= */
+
+    function showAuthError(text) {
+
+        authMessage.style.color =
+            "#ff6b6b";
+
+        authMessage.textContent =
+            text;
+    }
+
+    function showAuthSuccess(text) {
+
+        authMessage.style.color =
+            "#57f287";
+
+        authMessage.textContent =
+            text;
+    }
+
+    /* ================================
+       TOAST
+    ================================= */
+
+    let toastTimer;
+
+    function showToast(text) {
+
+        clearTimeout(toastTimer);
+
+        toast.textContent = text;
+
+        toast.classList.add("show");
+
+        toastTimer =
+            setTimeout(function () {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            }, 1800);
+    }
+
+    /* ================================
+       PROFILE IMAGE
+    ================================= */
+
+    profilePictureInput.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                this.files &&
+                this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            if (!file.type.startsWith("image/")) {
+
+                showToast(
+                    "Please choose an image."
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+            if (file.size > 1024 * 1024) {
+
+                showToast(
+                    "Profile picture must be under 1 MB."
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+                function () {
+
+                    selectedProfilePicture =
+                        reader.result;
+
+                    profilePreview.src =
+                        reader.result;
+                };
+
+            reader.onerror =
+                function () {
+
+                    showToast(
+                        "Could not read that image."
+                    );
+
+                };
+
+            reader.readAsDataURL(file);
+        }
+    );
+
+    /* ================================
+       SWITCH AUTH
+    ================================= */
+
+    showSignup.addEventListener(
+        "click",
+        function () {
+
+            loginForm.classList.add(
+                "hidden"
+            );
+
+            signupForm.classList.remove(
+                "hidden"
+            );
+
+            authMessage.textContent = "";
+
+            selectedProfilePicture =
+                defaultAvatar;
+
+            profilePreview.src =
+                defaultAvatar;
+
+            profilePictureInput.value = "";
+
+        }
+    );
+
+    showLogin.addEventListener(
+        "click",
+        function () {
+
+            signupForm.classList.add(
+                "hidden"
+            );
+
+            loginForm.classList.remove(
+                "hidden"
+            );
+
+            authMessage.textContent = "";
+
+        }
+    );
+
+    /* ================================
+       SIGNUP
+    ================================= */
+
+    signupButton.addEventListener(
+        "click",
+        signup
+    );
+
+    signupName.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+                signup();
+            }
+
+        }
+    );
+
+    signupPassword.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+                signup();
+            }
+
+        }
+    );
+
+    function signup() {
+
+        const name =
+            signupName.value.trim();
+
+        const password =
+            signupPassword.value;
+
+        authMessage.style.color =
+            "#ff6b6b";
+
+        authMessage.textContent = "";
+
+        if (name.length < 2) {
+
+            showAuthError(
+                "Name must be at least 2 characters."
+            );
+
+            return;
+        }
+
+        if (name.length > 24) {
+
+            showAuthError(
+                "Name must be 24 characters or less."
+            );
+
+            return;
+        }
+
+        if (password.length < 4) {
+
+            showAuthError(
+                "Password must be at least 4 characters."
+            );
+
+            return;
+        }
+
+        const users =
+            getUsers();
+
+        const exists =
+            users.some(function (user) {
+
+                return (
+                    String(user.name)
+                        .toLowerCase() ===
+                    name.toLowerCase()
+                );
+
+            });
+
+        if (exists) {
+
+            showAuthError(
+                "That name is already being used."
+            );
+
+            return;
+        }
+
+        const newUser = {
+
+            id: generateUserID(),
+
+            name: name,
+
+            password: password,
+
+            profilePicture:
+                selectedProfilePicture,
+
+            createdAt: Date.now()
+
+        };
+
+        users.push(newUser);
+
+        if (!saveUsers(users)) {
+            return;
+        }
+
+        try {
+
+            localStorage.setItem(
+                CURRENT_USER_KEY,
+                JSON.stringify({
+                    id: newUser.id
+                })
+            );
+
+        } catch (error) {
+
+            showAuthError(
+                "Account was created, but the session could not be saved."
+            );
+
+            return;
+        }
+
+        signupName.value = "";
+        signupPassword.value = "";
+
+        openChat();
+    }
+
+    /* ================================
+       LOGIN
+    ================================= */
+
+    loginButton.addEventListener(
+        "click",
+        login
+    );
+
+    loginName.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+                login();
+            }
+
+        }
+    );
+
+    loginPassword.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+                login();
+            }
+
+        }
+    );
+
+    function login() {
+
+        const name =
+            loginName.value.trim();
+
+        const password =
+            loginPassword.value;
+
+        authMessage.style.color =
+            "#ff6b6b";
+
+        if (!name || !password) {
+
+            showAuthError(
+                "Enter your name and password."
+            );
+
+            return;
+        }
+
+        const users =
+            getUsers();
+
+        const user =
+            users.find(function (item) {
+
+                return (
+                    String(item.name)
+                        .toLowerCase() ===
+                    name.toLowerCase() &&
+                    item.password ===
+                    password
+                );
+
+            });
+
+        if (!user) {
+
+            showAuthError(
+                "Incorrect name or password."
+            );
+
+            return;
+        }
+
+        try {
+
+            localStorage.setItem(
+                CURRENT_USER_KEY,
+                JSON.stringify({
+                    id: user.id
+                })
+            );
+
+        } catch (error) {
+
+            showAuthError(
+                "Could not save your login session."
+            );
+
+            return;
+        }
+
+        loginName.value = "";
+        loginPassword.value = "";
+
+        openChat();
+    }
+
+    /* ================================
+       LOGOUT
+    ================================= */
+
+    logoutButton.addEventListener(
+        "click",
+        function () {
+
+            localStorage.removeItem(
+                CURRENT_USER_KEY
+            );
+
+            chatScreen.classList.add(
+                "hidden"
+            );
+
+            authScreen.classList.remove(
+                "hidden"
+            );
+
+            loginForm.classList.remove(
+                "hidden"
+            );
+
+            signupForm.classList.add(
+                "hidden"
+            );
+
+            loginName.value = "";
+            loginPassword.value = "";
+
+            authMessage.textContent = "";
+
+            selectedProfilePicture =
+                defaultAvatar;
+
+            profilePreview.src =
+                defaultAvatar;
+
+        }
+    );
+
+    /* ================================
+       CURRENT USER
+    ================================= */
+
+    function getFullCurrentUser() {
+
+        const session =
+            getCurrentUser();
+
+        if (!session) {
+            return null;
+        }
+
+        const users =
+            getUsers();
+
+        return users.find(
+            function (user) {
+
+                return (
+                    user.id ===
+                    session.id
+                );
+
+            }
+        ) || null;
+    }
+
+    /* ================================
+       OPEN CHAT
+    ================================= */
+
+    function openChat() {
+
+        const user =
+            getFullCurrentUser();
+
+        if (!user) {
+
+            localStorage.removeItem(
+                CURRENT_USER_KEY
+            );
+
+            authScreen.classList.remove(
+                "hidden"
+            );
+
+            chatScreen.classList.add(
+                "hidden"
+            );
+
+            return;
+        }
+
+        authScreen.classList.add(
+            "hidden"
+        );
+
+        chatScreen.classList.remove(
+            "hidden"
+        );
+
+        currentUsername.textContent =
+            user.name;
+
+        currentProfilePicture.src =
+            user.profilePicture ||
+            defaultAvatar;
+
+        renderMessages();
+
+        setTimeout(function () {
+
+            messageInput.focus();
+
+        }, 100);
+    }
+
+    /* ================================
+       SEND MESSAGE
+    ================================= */
+
+    sendButton.addEventListener(
+        "click",
+        sendMessage
+    );
+
+    messageInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+
+        }
+    );
+
+    function sendMessage() {
+
+        const text =
+            messageInput.value.trim();
+
+        const user =
+            getFullCurrentUser();
+
+        if (!user) {
+            return;
+        }
+
+        if (!text && !pendingAttachment) {
+            return;
+        }
+
+        const message = {
+
+            id:
+                getNextMessageID(),
+
+            userId:
+                user.id,
+
+            username:
+                user.name,
+
+            profilePicture:
+                user.profilePicture ||
+                defaultAvatar,
+
+            text:
+                text,
+
+            attachment:
+                pendingAttachment,
+
+            reactions:
+                {},
+
+            createdAt:
+                Date.now()
+
+        };
+
+        const list =
+            getMessages();
+
+        list.push(message);
+
+        if (!saveMessages(list)) {
+            return;
+        }
+
+        messageInput.value = "";
+
+        pendingAttachment = null;
+
+        attachmentInput.value = "";
+
+        renderMessages();
+    }
+
+    /* ================================
+       RENDER MESSAGES
+    ================================= */
+
+    function renderMessages() {
+
+        const list =
+            getMessages();
+
+        messages.innerHTML = "";
+
+        if (list.length === 0) {
+
+            messages.innerHTML = `
+                <div class="empty-chat">
+
+                    <div class="empty-chat-icon">
+                        💬
+                    </div>
+
+                    <h2>
+                        Welcome to Chatly
+                    </h2>
+
+                    <p>
+                        Start the conversation.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+        list.forEach(function (message) {
+
+            createMessageElement(message);
+
+        });
+
+        messages.scrollTop =
+            messages.scrollHeight;
+    }
+
+    /* ================================
+       CREATE MESSAGE
+    ================================= */
+
+    function createMessageElement(message) {
+
+        const currentUser =
+            getFullCurrentUser();
+
+        const element =
+            document.createElement("div");
+
+        element.className =
+            "chat-message";
+
+        /* MAIN */
+
+        const main =
+            document.createElement("div");
+
+        main.className =
+            "message-main";
+
+        /* AVATAR */
+
+        const avatar =
+            document.createElement("img");
+
+        avatar.className =
+            "message-avatar";
+
+        avatar.src =
+            message.profilePicture ||
+            defaultAvatar;
+
+        avatar.alt =
+            "Profile picture";
+
+        /* BODY */
+
+        const body =
+            document.createElement("div");
+
+        body.className =
+            "message-body";
+
+        /* HEADER */
+
+        const header =
+            document.createElement("div");
+
+        header.className =
+            "message-header";
+
+        const username =
+            document.createElement("span");
+
+        username.className =
+            "message-user";
+
+        username.textContent =
+            message.username;
+
+        const id =
+            document.createElement("span");
+
+        id.className =
+            "message-id";
+
+        id.textContent =
+            "#" + message.id;
+
+        header.appendChild(username);
+        header.appendChild(id);
+
+        /* TEXT */
+
+        if (message.text) {
+
+            const content =
+                document.createElement("div");
+
+            content.className =
+                "message-content";
+
+            content.textContent =
+                message.text;
+
+            body.appendChild(content);
+        }
+
+        body.prepend(header);
+
+        /* ATTACHMENT */
+
+        if (message.attachment) {
+
+            addAttachmentElement(
+                body,
+                message.attachment
+            );
+        }
+
+        /* REACTIONS */
+
+        const reactionArea =
+            document.createElement("div");
+
+        reactionArea.className =
+            "reaction-area";
+
+        renderReactions(
+            reactionArea,
+            message,
+            currentUser
+        );
+
+        body.appendChild(
+            reactionArea
+        );
+
+        main.appendChild(avatar);
+        main.appendChild(body);
+
+        element.appendChild(main);
+
+        /* THREE DOT BUTTON */
+
+        const menuButton =
+            document.createElement("button");
+
+        menuButton.className =
+            "message-menu-button";
+
+        menuButton.type =
+            "button";
+
+        menuButton.textContent =
+            "⋯";
+
+        menuButton.title =
+            "Message options";
+
+        element.appendChild(
+            menuButton
+        );
+
+        /* MENU */
+
+        const menu =
+            document.createElement("div");
+
+        menu.className =
+            "message-menu hidden";
+
+        /* REACT */
+
+        const reactOption =
+            document.createElement("button");
+
+        reactOption.className =
+            "menu-item";
+
+        reactOption.type =
+            "button";
+
+        reactOption.textContent =
+            "😀 React";
+
+        reactOption.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                menu.classList.add(
+                    "hidden"
+                );
+
+                openEmojiPicker(
+                    element,
+                    message.id
+                );
+            }
+        );
+
+        menu.appendChild(
+            reactOption
+        );
+
+        /* COPY */
+
+        const copyOption =
+            document.createElement("button");
+
+        copyOption.className =
+            "menu-item";
+
+        copyOption.type =
+            "button";
+
+        copyOption.textContent =
+            "📋 Copy message ID";
+
+        copyOption.addEventListener(
+            "click",
+            function () {
+
+                copyText(
+                    String(message.id)
+                );
+
+                menu.classList.add(
+                    "hidden"
+                );
+
+                showToast(
+                    "Message ID copied!"
+                );
+            }
+        );
+
+        menu.appendChild(
+            copyOption
+        );
+
+        /* DELETE */
+
+        if (
+            currentUser &&
+            message.userId ===
+            currentUser.id
+        ) {
+
+            const deleteOption =
+                document.createElement("button");
+
+            deleteOption.className =
+                "menu-item danger";
+
+            deleteOption.type =
+                "button";
+
+            deleteOption.textContent =
+                "🗑️ Delete message";
+
+            deleteOption.addEventListener(
+                "click",
+                function () {
+
+                    deleteMessage(
+                        message.id
+                    );
+
+                    menu.classList.add(
+                        "hidden"
+                    );
+                }
+            );
+
+            menu.appendChild(
+                deleteOption
+            );
+        }
+
+        element.appendChild(menu);
+
+        menuButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                closeAllMenus();
+
+                menu.classList.toggle(
+                    "hidden"
+                );
+            }
+        );
+
+        messages.appendChild(element);
+    }
+
+    /* ================================
+       ATTACHMENT
+    ================================= */
+
+    function addAttachmentElement(
+        parent,
+        attachment
+    ) {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "file-preview";
+
+        if (
+            attachment.type &&
+            attachment.type.startsWith("image/")
+        ) {
+
+            const image =
+                document.createElement("img");
+
+            image.src =
+                attachment.data;
+
+            image.alt =
+                attachment.name ||
+                "Image";
+
+            wrapper.appendChild(image);
+
+        } else {
+
+            const icon =
+                document.createElement("span");
+
+            icon.textContent =
+                "📎";
+
+            const link =
+                document.createElement("a");
+
+            link.href =
+                attachment.data;
+
+            link.download =
+                attachment.name ||
+                "file";
+
+            link.textContent =
+                attachment.name ||
+                "Attached file";
+
+            wrapper.appendChild(icon);
+            wrapper.appendChild(link);
+        }
+
+        parent.appendChild(wrapper);
+    }
+
+    /* ================================
+       DELETE
+    ================================= */
+
+    function deleteMessage(messageID) {
+
+        const list =
+            getMessages();
+
+        const filtered =
+            list.filter(function (message) {
+
+                return message.id !== messageID;
+
+            });
+
+        saveMessages(filtered);
+
+        renderMessages();
+
+        showToast(
+            "Message deleted."
+        );
+    }
+
+    /* ================================
+       EMOJIS
+    ================================= */
+
+    const emojis = [
+        "😀","😃","😄","😁","😆","😅","😂",
+        "🤣","😊","😇","🙂","🙃","😉","😌",
+        "😍","🥰","😘","😎","🤩","🥳","😏",
+        "😢","😭","😡","🤬","😱","😴","🤔",
+        "🤨","😐","😶","🙄","😮","😲","🤯",
+        "🥺","😳","🤗","😈","👿","💀","☠️",
+        "👻","👽","🤖","💩","🔥","❤️","🧡",
+        "💛","💚","💙","💜","🖤","🤍","💔",
+        "💯","✨","⭐","🌟","🎉","🎊","👍",
+        "👎","👏","🙌","🙏","💪","👀","🍕",
+        "🍔","🍟","🌮","🍿","🎮","🎵","🚀"
+    ];
+
+    function openEmojiPicker(
+        messageElement,
+        messageID
+    ) {
+
+        closeAllMenus();
+
+        const picker =
+            document.createElement("div");
+
+        picker.className =
+            "emoji-picker";
+
+        const grid =
+            document.createElement("div");
+
+        grid.className =
+            "emoji-grid";
+
+        emojis.forEach(function (emoji) {
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "emoji-button";
+
+            button.type =
+                "button";
+
+            button.textContent =
+                emoji;
+
+            button.addEventListener(
+                "click",
+                function (event) {
+
+                    event.stopPropagation();
+
+                    toggleReaction(
+                        messageID,
+                        emoji
+                    );
+
+                    picker.remove();
+                }
+            );
+
+            grid.appendChild(button);
+        });
+
+        /* CUSTOM */
+
+        const customEmojis =
+            getCustomEmojis();
+
+        customEmojis.forEach(
+            function (customEmoji) {
+
+                const button =
+                    document.createElement("button");
+
+                button.className =
+                    "emoji-button";
+
+                button.type =
+                    "button";
+
+                const image =
+                    document.createElement("img");
+
+                image.className =
+                    "custom-emoji";
+
+                image.src =
+                    customEmoji.data;
+
+                image.alt =
+                    customEmoji.name;
+
+                button.appendChild(image);
+
+                button.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.stopPropagation();
+
+                        toggleReaction(
+                            messageID,
+                            customEmoji.code
+                        );
+
+                        picker.remove();
+                    }
+                );
+
+                grid.appendChild(button);
+            }
+        );
+
+        picker.appendChild(grid);
+
+        /* FOOTER */
+
+        const footer =
+            document.createElement("div");
+
+        footer.className =
+            "emoji-footer";
+
+        const addButton =
+            document.createElement("button");
+
+        addButton.className =
+            "add-emoji-button";
+
+        addButton.type =
+            "button";
+
+        addButton.textContent =
+            "➕ Add custom emoji";
+
+        addButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                uploadCustomEmoji(
+                    function () {
+
+                        picker.remove();
+
+                        openEmojiPicker(
+                            messageElement,
+                            messageID
+                        );
+                    }
+                );
+            }
+        );
+
+        footer.appendChild(addButton);
+
+        picker.appendChild(footer);
+
+        messageElement.appendChild(picker);
+    }
+
+    /* ================================
+       CUSTOM EMOJI
+    ================================= */
+
+    function uploadCustomEmoji(callback) {
+
+        const input =
+            document.createElement("input");
+
+        input.type =
+            "file";
+
+        input.accept =
+            "image/*";
+
+        input.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    input.files &&
+                    input.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                if (!file.type.startsWith("image/")) {
+
+                    showToast(
+                        "Choose an image."
+                    );
+
+                    return;
+                }
+
+                if (file.size > 512 * 1024) {
+
+                    showToast(
+                        "Custom emoji must be under 512 KB."
+                    );
+
+                    return;
+                }
+
+                const reader =
+                    new FileReader();
+
+                reader.onload =
+                    function () {
+
+                        const customEmojis =
+                            getCustomEmojis();
+
+                        const unique =
+                            Date.now() +
+                            "_" +
+                            Math.random()
+                                .toString(36)
+                                .substring(2,7);
+
+                        const customEmoji = {
+
+                            id: unique,
+
+                            name:
+                                file.name,
+
+                            code:
+                                "custom_" +
+                                unique,
+
+                            data:
+                                reader.result
+                        };
+
+                        customEmojis.push(
+                            customEmoji
+                        );
+
+                        saveCustomEmojis(
+                            customEmojis
+                        );
+
+                        showToast(
+                            "Custom emoji added!"
+                        );
+
+                        if (callback) {
+                            callback();
+                        }
+                    };
+
+                reader.readAsDataURL(file);
+            }
+        );
+
+        input.click();
+    }
+
+    /* ================================
+       REACTIONS
+    ================================= */
+
+    function findCustomEmoji(code) {
+
+        return getCustomEmojis().find(
+            function (emoji) {
+
+                return emoji.code === code;
+
+            }
+        ) || null;
+    }
+
+    function renderReactions(
+        area,
+        message,
+        currentUser
+    ) {
+
+        if (!message.reactions) {
+            message.reactions = {};
+        }
+
+        Object.entries(
+            message.reactions
+        ).forEach(
+            function ([emoji, users]) {
+
+                if (
+                    !Array.isArray(users) ||
+                    users.length === 0
+                ) {
+                    return;
+                }
+
+                const button =
+                    document.createElement("button");
+
+                button.className =
+                    "reaction";
+
+                button.type =
+                    "button";
+
+                const hasReacted =
+                    currentUser &&
+                    users.includes(
+                        currentUser.id
+                    );
+
+                if (hasReacted) {
+
+                    button.classList.add(
+                        "mine"
+                    );
+                }
+
+                const custom =
+                    findCustomEmoji(emoji);
+
+                if (custom) {
+
+                    const image =
+                        document.createElement("img");
+
+                    image.className =
+                        "reaction-image";
+
+                    image.src =
+                        custom.data;
+
+                    image.alt =
+                        custom.name;
+
+                    button.appendChild(image);
+
+                } else {
+
+                    button.appendChild(
+                        document.createTextNode(
+                            emoji
+                        )
+                    );
+                }
+
+                button.appendChild(
+                    document.createTextNode(
+                        " " + users.length
+                    )
+                );
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        toggleReaction(
+                            message.id,
+                            emoji
+                        );
+                    }
+                );
+
+                area.appendChild(button);
+            }
+        );
+    }
+
+    function toggleReaction(
+        messageID,
+        emoji
+    ) {
+
+        const user =
+            getFullCurrentUser();
+
+        if (!user) {
+            return;
+        }
+
+        const list =
+            getMessages();
+
+        const message =
+            list.find(
+                function (item) {
+
+                    return item.id === messageID;
+
+                }
+            );
+
+        if (!message) {
+            return;
+        }
+
+        if (!message.reactions) {
+            message.reactions = {};
+        }
+
+        if (
+            !Array.isArray(
+                message.reactions[emoji]
+            )
+        ) {
+
+            message.reactions[emoji] = [];
+        }
+
+        const users =
+            message.reactions[emoji];
+
+        const index =
+            users.indexOf(user.id);
+
+        if (index === -1) {
+
+            users.push(user.id);
+
+        } else {
+
+            users.splice(
+                index,
+                1
+            );
+        }
+
+        if (users.length === 0) {
+
+            delete message.reactions[emoji];
+        }
+
+        saveMessages(list);
+
+        renderMessages();
+    }
+
+    /* ================================
+       FILE ATTACHMENT
+    ================================= */
+
+    fileButton.addEventListener(
+        "click",
+        function () {
+
+            attachmentInput.click();
+
+        }
+    );
+
+    attachmentInput.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                this.files &&
+                this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+
+                showToast(
+                    "File is too large. Maximum is 2 MB."
+                );
+
+                this.value = "";
+
+                pendingAttachment = null;
+
+                return;
+            }
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+                function () {
+
+                    pendingAttachment = {
+
+                        name:
+                            file.name,
+
+                        type:
+                            file.type,
+
+                        data:
+                            reader.result
+                    };
+
+                    showToast(
+                        "File attached: " +
+                        file.name
+                    );
+                };
+
+            reader.onerror =
+                function () {
+
+                    showToast(
+                        "Could not read the file."
+                    );
+
+                    pendingAttachment = null;
+                };
+
+            reader.readAsDataURL(file);
+        }
+    );
+
+    /* ================================
+       COPY
+    ================================= */
+
+    function copyText(text) {
+
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
+
+            navigator.clipboard.writeText(
+                text
+            ).catch(function () {
+
+                fallbackCopy(text);
+
+            });
+
+        } else {
+
+            fallbackCopy(text);
+        }
+    }
+
+    function fallbackCopy(text) {
+
+        const textarea =
+            document.createElement("textarea");
+
+        textarea.value = text;
+
+        textarea.style.position =
+            "fixed";
+
+        textarea.style.opacity =
+            "0";
+
+        document.body.appendChild(
+            textarea
+        );
+
+        textarea.focus();
+        textarea.select();
+
+        try {
+
+            document.execCommand(
+                "copy"
+            );
+
+        } catch (error) {
+
+            showToast(
+                "Could not copy."
+            );
+        }
+
+        textarea.remove();
+    }
+
+    /* ================================
+       MENUS
+    ================================= */
+
+    function closeAllMenus() {
+
+        document
+            .querySelectorAll(
+                ".message-menu"
+            )
+            .forEach(function (menu) {
+
+                menu.classList.add(
+                    "hidden"
+                );
+            });
+
+        document
+            .querySelectorAll(
+                ".emoji-picker"
+            )
+            .forEach(function (picker) {
+
+                picker.remove();
+
+            });
+    }
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                !event.target.closest(
+                    ".message-menu-button"
+                ) &&
+                !event.target.closest(
+                    ".message-menu"
+                ) &&
+                !event.target.closest(
+                    ".emoji-picker"
+                )
+            ) {
+
+                closeAllMenus();
+            }
+        }
+    );
+
+    /* ================================
+       USER ID
+    ================================= */
+
+    function generateUserID() {
+
+        return (
+            "user_" +
+            Date.now().toString(36) +
+            "_" +
+            Math.random()
+                .toString(36)
+                .substring(2,10)
+        );
+    }
+
+    /* ================================
+       START
+    ================================= */
+
+    const currentUser =
+        getCurrentUser();
+
+    if (currentUser) {
+
+        openChat();
+
+    } else {
+
+        authScreen.classList.remove(
+            "hidden"
+        );
+
+        chatScreen.classList.add(
+            "hidden"
+        );
+    }
+
+});
+</script>
+
+</body>
+</html>
